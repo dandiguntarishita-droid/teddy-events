@@ -1,0 +1,220 @@
+
+/* =================================
+   GLOBAL ANIMATION SETTINGS
+================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  transition:
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* =================================
+   GOLD SHIMMER EFFECT
+================================= */
+
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.hero h1 span,
+.about-content h2 em,
+.services-heading h2 em,
+.gallery-heading h2 em,
+.experience-content h2 em,
+.testimonials-heading h2 em,
+.contact-heading h2 em {
+  background: linear-gradient(
+    100deg,
+    #a98b56,
+    #e9d6ad,
+    #b99a63,
+    #f1dfb9,
+    #a98b56
+  );
+
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: goldShimmer 7s linear infinite;
+}
+
+/* =================================
+   FLOATING ELEMENTS
+================================= */
+
+@keyframes floatingUp {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.experience-floating-card {
+  animation: floatingUp 5s ease-in-out infinite;
+}
+
+/* =================================
+   IMAGE HOVER EFFECTS
+================================= */
+
+.about-image-wrap,
+.experience-image-wrap,
+.service-image,
+.gallery-item {
+  overflow: hidden;
+}
+
+.about-image,
+.experience-image-wrap img,
+.service-image img,
+.gallery-item img {
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.6s ease;
+}
+
+.about-image-wrap:hover .about-image {
+  transform: scale(1.035);
+}
+
+.service-card:hover .service-image img,
+.gallery-item:hover img {
+  filter: brightness(0.9);
+}
+
+/* =================================
+   GOLD UNDERLINE HOVER
+================================= */
+
+.navbar-links a,
+.footer-links a {
+  position: relative;
+}
+
+.navbar-links a::after,
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.35s ease;
+}
+
+.navbar-links a:hover::after,
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+/* =================================
+   BUTTON INTERACTIONS
+================================= */
+
+.hero-primary-btn,
+.navbar-cta,
+.contact-banner > a {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-primary-btn::before,
+.navbar-cta::before,
+.contact-banner > a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+}
+
+.hero-primary-btn:hover::before,
+.navbar-cta:hover::before,
+.contact-banner > a:hover::before {
+  left: 150%;
+}
+
+/* =================================
+   GALLERY EFFECTS
+================================= */
+
+.gallery-item-overlay {
+  backdrop-filter: blur(1px);
+}
+
+.gallery-item:hover .gallery-item-overlay {
+  transform: translateY(0);
+}
+
+/* =================================
+   CONTACT CARD HOVER
+================================= */
+
+.contact-card:hover .contact-card-icon {
+  background: var(--champagne);
+  color: var(--black);
+  transform: rotate(-5deg);
+}
+
+.contact-card:hover .contact-card-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* =================================
+   TESTIMONIAL TRANSITION
+================================= */
+
+.testimonial-card {
+  transition: box-shadow 0.4s ease;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 20px 65px rgba(185, 154, 99, 0.12);
+}
+
+/* =================================
+   REDUCED MOTION ACCESSIBILITY
+================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
