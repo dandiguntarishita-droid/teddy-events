@@ -792,3 +792,286 @@ textarea {
     font-size: 10px;
   }
 }
+
+/* =========================================
+   TEDDY EVENTS - MOBILE GALLERY CAROUSEL
+========================================= */
+
+.gallery-swipe-hint {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 2px 20px !important;
+  }
+
+  .gallery-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-grid .gallery-item {
+    flex: 0 0 82% !important;
+    width: 82% !important;
+    min-width: 82% !important;
+    max-width: 82% !important;
+    height: 330px !important;
+    scroll-snap-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .gallery-grid .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-swipe-hint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 25px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: 0.7;
+  }
+
+  .gallery-filters {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+  }
+
+  .gallery-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-filters button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid .gallery-item {
+    flex-basis: 88% !important;
+    min-width: 88% !important;
+    max-width: 88% !important;
+    height: 290px !important;
+  }
+}
+
+/* =========================================
+   TEDDY EVENTS - MOBILE SERVICES CAROUSEL
+========================================= */
+
+.services-swipe-hint,
+.services-carousel-arrows {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .services-carousel-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .services-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 12px 2px 24px !important;
+  }
+
+  .services-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .services-grid .service-card {
+    flex: 0 0 82% !important;
+    width: 82% !important;
+    min-width: 82% !important;
+    max-width: 82% !important;
+    scroll-snap-align: center;
+    margin: 0 !important;
+  }
+
+  .services-grid .service-image {
+    height: 230px;
+    overflow: hidden;
+  }
+
+  .services-grid .service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .services-carousel-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .services-carousel-arrows button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .services-swipe-hint {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-grid .service-card {
+    flex-basis: 88% !important;
+    min-width: 88% !important;
+    max-width: 88% !important;
+  }
+
+  .services-grid .service-image {
+    height: 210px;
+  }
+}
+
+/* =========================================
+   TEDDY EVENTS - STICKY NAVIGATION
+========================================= */
+
+.navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    padding 0.35s ease;
+}
+
+.navbar-scrolled {
+  background: rgba(15, 15, 15, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.18);
+}
+
+.navbar-brand {
+  text-decoration: none;
+}
+
+.navbar-brand-text small {
+  display: none !important;
+}
+
+.navbar-brand-text strong {
+  display: inline-block;
+}
+
+/* Keep sections visible below sticky navigation */
+html {
+  scroll-padding-top: 90px;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    top: 0;
+  }
+
+  html {
+    scroll-padding-top: 75px;
+  }
+}
+
+/* =========================================
+   TEDDY EVENTS - BACK TO TOP BUTTON
+========================================= */
+
+.back-to-top {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 2000;
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d4af70;
+  border-radius: 50%;
+
+  background: #171717;
+  color: #d4af70;
+
+  cursor: pointer;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(20px);
+
+  transition: all 0.35s ease;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: #d4af70;
+  color: #171717;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(212, 175, 112, 0.3);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    width: 44px;
+    height: 44px;
+    right: 16px;
+    bottom: 18px;
+  }
+}

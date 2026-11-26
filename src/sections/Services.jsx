@@ -1,4 +1,5 @@
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Heart,
@@ -10,6 +11,8 @@ import {
   Camera,
   Sparkles,
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const services = [
@@ -79,32 +82,62 @@ const services = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 45,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-    },
-  },
-};
-
 export default function Services() {
+  const sliderRef = useRef(null);
+  const pauseRef = useRef(false);
+
+  // Automatically slide services on mobile
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const interval = setInterval(() => {
+      if (window.innerWidth > 768 || pauseRef.current) return;
+
+      const card = slider.querySelector(".service-card");
+      if (!card) return;
+
+      const cardWidth =
+        card.getBoundingClientRect().width + 16;
+
+      const maxScroll =
+        slider.scrollWidth - slider.clientWidth;
+
+      if (slider.scrollLeft >= maxScroll - 10) {
+        slider.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else {
+        slider.scrollBy({
+          left: cardWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const moveSlider = (direction) => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const card = slider.querySelector(".service-card");
+    if (!card) return;
+
+    const cardWidth =
+      card.getBoundingClientRect().width + 16;
+
+    slider.scrollBy({
+      left: direction * cardWidth,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section className="services section-padding" id="services">
+
       <div className="services-heading">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -133,54 +166,89 @@ export default function Services() {
         </motion.p>
       </div>
 
-      <motion.div
-        className="services-grid"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+      <div
+        className="services-carousel-wrapper"
+        onTouchStart={() => {
+          pauseRef.current = true;
+        }}
+        onTouchEnd={() => {
+          setTimeout(() => {
+            pauseRef.current = false;
+          }, 2500);
+        }}
+        onMouseEnter={() => {
+          pauseRef.current = true;
+        }}
+        onMouseLeave={() => {
+          pauseRef.current = false;
+        }}
       >
-        {services.map((service) => {
-          const Icon = service.icon;
+        <div
+          className="services-grid"
+          ref={sliderRef}
+        >
+          {services.map((service) => {
+            const Icon = service.icon;
 
-          return (
-            <motion.article
-              className="service-card"
-              variants={cardVariants}
-              key={service.number}
-              whileHover={{ y: -10 }}
-            >
-              <div className="service-image">
-                <img
-                  src={service.image}
-                  alt={`TEDDY EVENTS - ${service.title}`}
-                  loading="lazy"
-                />
+            return (
+              <motion.article
+                className="service-card"
+                key={service.number}
+                whileHover={{ y: -10 }}
+              >
+                <div className="service-image">
+                  <img
+                    src={service.image}
+                    alt={`TEDDY EVENTS - ${service.title}`}
+                    loading="lazy"
+                  />
 
-                <span className="service-number">
-                  {service.number}
-                </span>
+                  <span className="service-number">
+                    {service.number}
+                  </span>
 
-                <span className="service-icon">
-                  <Icon size={23} />
-                </span>
+                  <span className="service-icon">
+                    <Icon size={23} />
+                  </span>
 
-                <div className="service-image-overlay"></div>
-              </div>
+                  <div className="service-image-overlay"></div>
+                </div>
 
-              <div className="service-info">
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
+                <div className="service-info">
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
 
-                <a href="#contact" className="service-link">
-                  CONTACT US
-                  <ArrowUpRight size={17} />
-                </a>
-              </div>
-            </motion.article>
-          );
-        })}
-      </motion.div>
+                  <a href="#contact" className="service-link">
+                    CONTACT US
+                    <ArrowUpRight size={17} />
+                  </a>
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
+
+        <div className="services-carousel-arrows">
+          <button
+            onClick={() => moveSlider(-1)}
+            aria-label="Previous service"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          <button
+            onClick={() => moveSlider(1)}
+            aria-label="Next service"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      <p className="services-swipe-hint">
+        SWIPE TO EXPLORE OUR SERVICES
+      </p>
+
     </section>
   );
 }

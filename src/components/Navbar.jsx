@@ -19,15 +19,23 @@ export default function Navbar() {
       setScrolled(window.scrollY > 40);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
-
+    <header
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
+    >
       <a href="#home" className="navbar-brand" onClick={closeMenu}>
         <img
           src="/images/logo_teddy_events_page_13.png"
@@ -37,7 +45,6 @@ export default function Navbar() {
 
         <span className="navbar-brand-text">
           <strong>TEDDY EVENTS</strong>
-          <small>CREATING MOMENTS • CAPTURING MEMORIES</small>
         </span>
       </a>
 
@@ -49,7 +56,7 @@ export default function Navbar() {
         ))}
       </nav>
 
-      <a href="#contact" className="navbar-cta">
+      <a href="#contact" className="navbar-cta" onClick={closeMenu}>
         Contact Us
         <ArrowUpRight size={17} />
       </a>
@@ -59,6 +66,7 @@ export default function Navbar() {
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation"
         aria-expanded={menuOpen}
+        aria-controls="main-navigation"
       >
         {menuOpen ? <X size={25} /> : <Menu size={25} />}
       </button>

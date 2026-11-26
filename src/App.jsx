@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import BackToTop from "./components/BackToTop";
 
 import Hero from "./sections/Hero";
 import About from "./sections/About";
@@ -39,6 +40,8 @@ function App() {
       </main>
 
       <Footer />
+
+      <BackToTop />
     </div>
   );
 }

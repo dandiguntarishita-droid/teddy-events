@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -59,12 +59,60 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  const galleryRef = useRef(null);
+  const pauseRef = useRef(false);
+
   const filteredPhotos =
     activeCategory === "All"
       ? photos
       : photos.filter((photo) => photo.category === activeCategory);
 
+  // Reset carousel when category changes
+  useEffect(() => {
+    if (galleryRef.current) {
+      galleryRef.current.scrollTo({
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [activeCategory]);
+
+  // Automatic horizontal sliding on mobile
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery) return;
+
+    const interval = setInterval(() => {
+      if (window.innerWidth > 768 || pauseRef.current) return;
+
+      const card = gallery.querySelector(".gallery-item");
+      if (!card) return;
+
+      const cardWidth =
+        card.getBoundingClientRect().width + 16;
+
+      const maxScroll =
+        gallery.scrollWidth - gallery.clientWidth;
+
+      if (gallery.scrollLeft >= maxScroll - 10) {
+        gallery.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      } else {
+        gallery.scrollBy({
+          left: cardWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [activeCategory]);
+
   const changePhoto = (direction) => {
+    if (!selectedPhoto) return;
+
     const currentIndex = filteredPhotos.findIndex(
       (photo) => photo.id === selectedPhoto.id
     );
@@ -78,6 +126,7 @@ export default function Gallery() {
 
   return (
     <section className="gallery section-padding" id="gallery">
+
       <div className="gallery-heading">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -115,7 +164,25 @@ export default function Gallery() {
         ))}
       </div>
 
-      <motion.div layout className="gallery-grid">
+      <motion.div
+        layout
+        className="gallery-grid"
+        ref={galleryRef}
+        onTouchStart={() => {
+          pauseRef.current = true;
+        }}
+        onTouchEnd={() => {
+          setTimeout(() => {
+            pauseRef.current = false;
+          }, 2500);
+        }}
+        onMouseEnter={() => {
+          pauseRef.current = true;
+        }}
+        onMouseLeave={() => {
+          pauseRef.current = false;
+        }}
+      >
         <AnimatePresence mode="popLayout">
           {filteredPhotos.map((photo, index) => (
             <motion.article
@@ -130,7 +197,7 @@ export default function Gallery() {
               role="button"
               tabIndex={0}
               onKeyDown={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === "Enter" || event.key === " ") {
                   setSelectedPhoto(photo);
                 }
               }}
@@ -150,6 +217,12 @@ export default function Gallery() {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      <p className="gallery-swipe-hint">
+        <ChevronLeft size={15} />
+        SWIPE TO EXPLORE MORE
+        <ChevronRight size={15} />
+      </p>
 
       <AnimatePresence>
         {selectedPhoto && (
@@ -214,6 +287,7 @@ export default function Gallery() {
           <ArrowUpRight size={18} />
         </a>
       </div>
+
     </section>
   );
 }
