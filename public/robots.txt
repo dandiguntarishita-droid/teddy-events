@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://teddy-events.onrender.com/sitemap.xml
